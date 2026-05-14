@@ -32,22 +32,61 @@ Many individuals struggle to track their daily expenses accurately using manual 
 
 ---
 
+## PHASE 2: PROTOTYPING & BEST PRACTICES
+
+### 1. Software Development Prototype
+The developed prototype for **PEMS** is a functional, distributed application using **Java Swing** for the frontend and **Java RMI** for the backend. 
+*   **Purpose**: This prototype validates the feasibility of real-time expense tracking and remote data persistence.
+*   **Validation**: It tests the RMI connection between the Client and Server, ensuring that even if they are on different machines, data is synchronized correctly.
+
+### 2. Software Programming Best Practices (Google Java Style)
+We adhered to the **Google Java Style Guide** to ensure professional code quality:
+*   **Naming Conventions**: All classes use `UpperCamelCase` (e.g., `ExpenseDao`), and variables/methods use `lowerCamelCase` (e.g., `saveExpense`).
+*   **Indentation**: Used consistent 4-space indentation and standard block structures.
+*   **Package Structure**: Followed a modular structure (`model`, `dao`, `service`, `controller`) for high maintainability.
+
+### 3. Design Patterns Implemented
+We referred to two primary design patterns:
+*   **DAO (Data Access Object) Pattern**: 
+    - *How it's used*: We created `ExpenseDao` and `UserDao` to separate the database logic from the business logic. 
+    - *Benefit*: This makes the code decoupled; changing the database does not require changing the UI logic.
+*   **Singleton Pattern**: 
+    - *How it's used*: Implemented in `HibernateUtil.java`. It ensures that only **one instance** of the Hibernate `SessionFactory` exists.
+    - *Benefit*: Prevents multiple database connections from slowing down the system.
+
+---
+
 ## PHASE 3: DEPLOYMENT & VERSION CONTROL
 
-### 1. Dockerization Strategy
-The system is containerized using **Docker Compose** for high portability:
+### 1. The Dockerization Process
+Dockerizing an application involves three main steps:
+1.  **Writing a Dockerfile**: Creating a script that contains all the commands needed to assemble an image (OS, Java environment, and application files).
+2.  **Building the Image**: Using the `docker build` command to create a portable package of the software.
+3.  **Running the Container**: Using `docker-compose` to start the application in an isolated environment where it can communicate with other containers (like the Database).
+
+### 2. Our Dockerization Strategy
+The **PEMS** system is containerized using **Docker Compose** for high portability:
 *   **Container 1 (PostgreSQL)**: Stores all user and expense data.
 *   **Container 2 (Java RMI Server)**: Handles business logic and DB communication.
-*   **Benefit**: The instructor can deploy the entire stack with one command: `docker-compose up`.
+*   **Benefit**: This ensures the software runs exactly the same on the lecturer's computer as it does on the developer's computer.
 
-### 2. Version Control (Git)
-*   **Platform**: GitHub
-*   **Link**: [https://github.com/Impanonelly/PersonnelExpenseMonitoringSystem](https://github.com/Impanonelly/PersonnelExpenseMonitoringSystem)
-*   **Strategy**: Initialized with a `.gitignore` to exclude build artifacts and track only clean source code.
+### 3. Version Control System (VCS) - Git
+We have selected **Git** (managed via **GitHub**) as our Version Control System. 
+*   **Configuration**: We initialized a local Git repository and connected it to GitHub.
+*   **Capturing Necessary Parts**: We used a `.gitignore` file to ensure that only source code and configuration files are tracked, while temporary IDE files and build artifacts are excluded.
+*   **Repository Link**: [https://github.com/Impanonelly/PersonnelExpenseMonitoringSystem](https://github.com/Impanonelly/PersonnelExpenseMonitoringSystem)
 
 ---
 
 ## PHASE 4: SOFTWARE TEST PLAN
+
+### 1. Test Plan Roadmap
+*   **What will be tested**: All core features including User Authentication, Expense CRUD (Create, Read, Update, Delete), Search filters, and PDF Report generation.
+*   **How it will be tested**: **Manual Functional Testing** (using the UI) and **Integration Testing** (verifying the RMI connection between Client, Server, and Database).
+*   **Who will test**: The primary developer (the student) will perform the testing.
+*   **Schedule**: Testing is performed after each phase of development and a final "Smoke Test" is done before submission.
+
+### 2. Test Cases and Results
 
 | Test ID | Feature | Test Case | Expected Result | Result |
 | :--- | :--- | :--- | :--- | :--- |
