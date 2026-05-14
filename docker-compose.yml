@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # 1. Database Service (PostgreSQL)
+  db:
+    image: postgres:15
+    container_name: pems-db
+    environment:
+      POSTGRES_DB: personnel_expense_monitoring_system_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: impano12@
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pems-network
+
+  # 2. Backend Service (RMI Server)
+  server:
+    build: 
+      context: ./PersonnelExpenseMonitoringSystemServer(26521)
+      dockerfile: Dockerfile
+    container_name: pems-server
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_URL=jdbc:postgresql://db:5432/personnel_expense_monitoring_system_db
+    depends_on:
+      - db
+    networks:
+      - pems-network
+
+  # 3. Frontend Service (Swing Client - Build & Package)
+  client:
+    build:
+      context: ./PersonnelExpenseMonitoringSystemClient(26521)
+      dockerfile: Dockerfile
+    container_name: pems-client
+    depends_on:
+      - server
+    networks:
+      - pems-network
+
+networks:
+  pems-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

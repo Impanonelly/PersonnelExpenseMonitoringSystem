@@ -65,10 +65,11 @@ Dockerizing an application involves three main steps:
 3.  **Running the Container**: Using `docker-compose` to start the application in an isolated environment where it can communicate with other containers (like the Database).
 
 ### 2. Our Dockerization Strategy
-The **PEMS** system is containerized using **Docker Compose** for high portability:
-*   **Container 1 (PostgreSQL)**: Stores all user and expense data.
-*   **Container 2 (Java RMI Server)**: Handles business logic and DB communication.
-*   **Benefit**: This ensures the software runs exactly the same on the lecturer's computer as it does on the developer's computer.
+The **PEMS** system is containerized using a central **Docker Compose** file in the root directory, which orchestrates three main services:
+*   **Container 1 (PostgreSQL Database)**: Stores all user and expense data.
+*   **Container 2 (Java RMI Backend Server)**: Handles business logic, security, and DB communication.
+*   **Container 3 (Java Swing Frontend Client)**: Packaged as a container for portability and deployment testing.
+*   **Benefit**: The entire stack (Frontend, Backend, and Database) can be launched with a single command: `docker-compose up`.
 
 ### 3. Version Control System (VCS) - Git
 We have selected **Git** (managed via **GitHub**) as our Version Control System. 
